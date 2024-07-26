@@ -65,7 +65,59 @@ router.post('/admin', async (req,res) => {
 
 
 router.get('/dashboard', authMiddleWare,  async (req,res) => {
-    res.render('admin/dashboard');
+    try{
+        const locals = {
+            title: "Dashboard",
+            description: 'Simple Blog created with NodeJS, Express & MongoDB'
+        }
+        const data = await Post.find();
+        res.render('admin/dashboard',{
+            locals, 
+            data,
+            layout: adminLayout
+        });
+    }catch(error){
+        console.log(error);
+    }
+    
+});
+
+router.get('/add-post', authMiddleWare,  async (req,res) => {
+    try{
+        const locals = {
+            title: "Add Post",
+            description: 'Simple Blog created with NodeJS, Express & MongoDB'
+        }
+        const data = await Post.find();
+        res.render('admin/add-post',{
+            locals, 
+            data,
+            layout: adminLayout
+        });
+    }catch(error){
+        console.log(error);
+    }
+    
+});
+
+router.post('/add-post', authMiddleWare,  async (req,res) => {
+    try{
+        const {title, body} = req.body;
+        
+        try{
+            const newPost = new Post({
+                title,
+                body
+            });
+            await Post.create(newPost);
+            res.redirect("/dashboard");
+        }catch(error){
+            console.log(error);
+        }
+    }catch(error){
+        console.log(error);
+    }
+    
 });
 
 
