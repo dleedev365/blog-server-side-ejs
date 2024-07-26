@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express');
 const expressLayout = require('express-ejs-layouts');
+// allow HTTP verbs to be used where the client doesn't support it
+const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./server/config/db');
 const MongoStore = require('connect-mongo');
@@ -19,6 +21,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(express.static('public'));
 app.use(cookieParser());
+app.use(methodOverride('_method'));
+
 
 app.use(session({
     secret: 'keyboard cat',

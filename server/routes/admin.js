@@ -63,7 +63,6 @@ router.post('/admin', async (req,res) => {
     }
 });
 
-
 router.get('/dashboard', authMiddleWare,  async (req,res) => {
     try{
         const locals = {
@@ -120,6 +119,39 @@ router.post('/add-post', authMiddleWare,  async (req,res) => {
     
 });
 
+router.get('/edit-post/:id', authMiddleWare,  async (req,res) => {
+    try{
+        const locals = {
+            title: "Dashboard",
+            description: 'Simple Blog created with NodeJS, Express & MongoDB'
+        }
+
+        const data = await Post.find();
+        res.render('admin/dashboard',{
+            locals, 
+            data,
+            layout: adminLayout
+        });
+    }catch(error){
+        console.log(error);
+    }
+    
+});
+
+router.put('/edit-post/:id', authMiddleWare,  async (req,res) => {
+    try{
+        await Post.findByIdAndUpdate(req.params.id, {
+            title: req.body.title,
+            body: req.body.body,
+            updatedAt: Date.now()
+        });
+
+        res.redirect(`/edit-post/${req.params.id}`);
+    }catch(error){
+        console.log(error);
+    }
+    
+});
 
 router.post('/register', async (req,res) => {
     try{
@@ -140,5 +172,6 @@ router.post('/register', async (req,res) => {
         console.log(error);
     }
 });
+
 
 module.exports = router;
