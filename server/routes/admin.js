@@ -29,7 +29,8 @@ router.get('/admin', async (req,res) => {
     try{
         const locals = {
             title: "Admin",
-            description: "Simple Blog created with NodeJs, Express & MongoDB."
+            description: "Simple Blog created with NodeJs, Express & MongoDB.",
+            currentRoute: '/admin'
         }
 
         res.render('admin/index', {locals, layout: adminLayout});
@@ -67,7 +68,8 @@ router.get('/dashboard', authMiddleWare,  async (req,res) => {
     try{
         const locals = {
             title: "Dashboard",
-            description: 'Simple Blog created with NodeJS, Express & MongoDB'
+            description: 'Simple Blog created with NodeJS, Express & MongoDB',
+            currentRoute: '/admin/dashboard'
         }
         const data = await Post.find();
         res.render('admin/dashboard',{
@@ -85,7 +87,8 @@ router.get('/add-post', authMiddleWare,  async (req,res) => {
     try{
         const locals = {
             title: "Add Post",
-            description: 'Simple Blog created with NodeJS, Express & MongoDB'
+            description: 'Simple Blog created with NodeJS, Express & MongoDB',
+            currentRoute: 'admin/add-post'
         }
         const data = await Post.find();
         res.render('admin/add-post',{
@@ -121,10 +124,12 @@ router.post('/add-post', authMiddleWare,  async (req,res) => {
 
 router.get('/edit-post/:id', authMiddleWare,  async (req,res) => {
     try{
-        const data = await Post.findOne({ _id: req.params.id});
+        let slug = req.params.id;
+        const data = await Post.findOne({ _id: slug});
         res.render('admin/edit-post',{
             data,
-            layout: adminLayout
+            layout: adminLayout,
+            currentRoute: `/edit-post/${slug}`
         });
     }catch(error){
         console.log(error);
@@ -177,5 +182,12 @@ router.delete('/delete-post/:id', authMiddleWare,  async (req,res) => {
     
 });
 
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    // res.json({message: "Logout Successful"});
+    res.redirect('/', {
+        currentRoute: '/admin/logout'
+    });
+});
 
 module.exports = router;

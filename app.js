@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./server/config/db');
 const MongoStore = require('connect-mongo');
 const session = require('express-session');
+const {isActiveRoute} = require('./server/helpers/routeHelpers');
+
 
 const app = express();
 const PORT = 3000 || process.env.PORT;
@@ -23,6 +25,7 @@ app.use(express.static('public'));
 app.use(cookieParser());
 app.use(methodOverride('_method'));
 
+app.locals.isActiveRoute = isActiveRoute;
 
 app.use(session({
     secret: 'keyboard cat',
