@@ -30,10 +30,9 @@ router.get('/admin', async (req,res) => {
         const locals = {
             title: "Admin",
             description: "Simple Blog created with NodeJs, Express & MongoDB.",
-            currentRoute: '/admin'
         }
 
-        res.render('admin/index', {locals, layout: adminLayout});
+        res.render('admin/index', {locals, layout: adminLayout,    currentRoute: '/admin'});
 
     }catch(error){
         console.log(error);
@@ -69,13 +68,14 @@ router.get('/dashboard', authMiddleWare,  async (req,res) => {
         const locals = {
             title: "Dashboard",
             description: 'Simple Blog created with NodeJS, Express & MongoDB',
-            currentRoute: '/admin/dashboard'
+            
         }
         const data = await Post.find();
         res.render('admin/dashboard',{
             locals, 
             data,
-            layout: adminLayout
+            layout: adminLayout,
+            currentRoute: '/admin/dashboard'
         });
     }catch(error){
         console.log(error);
@@ -88,13 +88,14 @@ router.get('/add-post', authMiddleWare,  async (req,res) => {
         const locals = {
             title: "Add Post",
             description: 'Simple Blog created with NodeJS, Express & MongoDB',
-            currentRoute: 'admin/add-post'
+            
         }
         const data = await Post.find();
         res.render('admin/add-post',{
             locals, 
             data,
-            layout: adminLayout
+            layout: adminLayout,
+            currentRoute: 'admin/add-post'
         });
     }catch(error){
         console.log(error);

@@ -6,7 +6,7 @@ router.get('', async (req,res) => {
     try{
         const locals = {
             title: "NodeJs Blog",
-            description: "Simple Blog created with NodeJs, Express & MongoDB."
+            description: "Simple Blog created with NodeJs, Express & MongoDB.",
         }
 
         let perPage = 10;
@@ -41,11 +41,10 @@ router.get('/post/:id', async (req,res) => {
         const locals = {
             title: "NodeJs Blog",
             description: "Simple Blog created with NodeJs, Express & MongoDB.",
-            currentRoute: `/post/${slug}`
         }
         
         const data = await Post.findById({ _id: slug });
-        res.render('post', {locals, data});
+        res.render('post', {locals, data, currentRoute: `/post/${slug}`});
     }catch(error){
         console.log(error);
     }
@@ -79,6 +78,12 @@ router.post('/search', async (req,res) => {
 router.get('/about', (req,res) => {
     res.render('about',{
         currentRoute: '/about'
+    });
+});
+
+router.get('/contact', (req,res) => {
+    res.render('contact',{
+        currentRoute: '/contact'
     });
 });
 
